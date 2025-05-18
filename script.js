@@ -53,41 +53,40 @@ async function checkWeather(city){
 
 		switch(weather_data.weather[0].main){
 			case 'Clouds':
-				weather_img.src = "/img/cloud.png";
+				weather_img.src = "./img/cloud.png";
 				break;
 			case 'Clear':
-				weather_img.src = "/img/clear.png";
+				weather_img.src = "./img/clear.png";
 				break;
 			case 'Rain':
-				weather_img.src = "/img/rain.png";
+				weather_img.src = "./img/rain.png";
 				break;
 			case 'Mist':
-				weather_img.src = "/img/mist.png";
+				weather_img.src = "./img/mist.png";
 				break;
 			case 'Snow':
-				weather_img.src = "/img/snow.png";
+				weather_img.src = "./img/snow.png";
 				break;
 		}
 
 		switch(weather_data.weather[0].main){
 			case 'Clouds':
-				body.style.backgroundImage = "url('/img/cloudbg.jpg')";
+				body.style.backgroundImage = "url('./img/cloudbg.jpg')";
 				break;
 			case 'Clear':
-				body.style.backgroundImage = "url('/img/clearbg.jpg')";
+				body.style.backgroundImage = "url('./img/clearbg.jpg')";
 				break;
 			case 'Rain':
-				body.style.backgroundImage = "url('/img/rainbg.jpg')";
+				body.style.backgroundImage = "url('./img/rainbg.jpg')";
 				break;
 			case 'Mist':
-				body.style.backgroundImage = "url('/img/mistbg.jpg')";
+				body.style.backgroundImage = "url('./img/mistbg.jpg')";
 				break;
 			case 'Snow':
-				body.style.backgroundImage = "url('/img/snowbg.jpg')";
+				body.style.backgroundImage = "url('./img/snowbg.jpg')";
 				break;
 		}
 		
 	}
-	console.log(weather_data);
 }
 
