@@ -9,85 +9,79 @@ const location_not_found = document.querySelector('.location-not-found');
 const weather_body = document.querySelector('.weather-body');
 const body = document.getElementById('body');
 
-// <<============================ Input=====================================>>
+// Relative paths (no leading "/") so they work on GitHub Pages project sites.
+// Each weather type maps to [icon, background].
+const WEATHER_IMAGES = {
+    Clouds:       ['img/cloud.png', 'img/cloudbg.jpg'],
+    Clear:        ['img/clear.png', 'img/clearbg.jpg'],
+    Rain:         ['img/rain.png',  'img/rainbg.jpg'],
+    Drizzle:      ['img/rain.png',  'img/rainbg.jpg'],
+    Thunderstorm: ['img/rain.png',  'img/rainbg.jpg'],
+    Mist:         ['img/mist.png',  'img/mistbg.jpg'],
+    Haze:         ['img/mist.png',  'img/mistbg.jpg'],
+    Fog:          ['img/mist.png',  'img/mistbg.jpg'],
+    Smoke:        ['img/mist.png',  'img/mistbg.jpg'],
+    Snow:         ['img/snow.png',  'img/snowbg.jpg'],
+};
+const DEFAULT_IMAGES = ['img/cloud.png', 'img/cloudbg.jpg'];
+
+// <<============================ Input =====================================>>
 searchBtn.addEventListener('click', () => {
-	checkWeather(inputBox.value);
+    checkWeather(inputBox.value);
 });
 
-inputBox.addEventListener('keydown', function(event) {
-	if (event.key === 'Enter') {
-		checkWeather(inputBox.value);
-	}
+inputBox.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+        checkWeather(inputBox.value);
+    }
 });
-// <<============================ Main Function=====================================>>
 
-async function checkWeather(city){
-	const api_key = "dbfedf966d7f8edcf98ed3b799512581";
-	const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}`;
-
-	const weather_data = await fetch(`${url}`).then(response => response.json());
-	
-	// <<============================ Error Handling=====================================>> 
-	if(weather_data.cod === '404'){
-		location_not_found.style.display = "flex";
-		weather_body.style.display = "none";
-		body.style.backgroundColor = 'hsl(240, 58%,48%)';
-		body.style.backgroundImage = "none";
-
-		return;
-	}
-	else{
-	// <<============================ Value Obtaining=====================================>> 
-
-		location_not_found.style.display = "none";
-		weather_body.style.display = "flex";
-		temperature.innerHTML = `${Math.round(weather_data.main.temp - 273.15)}°C`;
-
-		description.innerHTML = `${weather_data.weather[0].description}`;
-
-		humidity.innerHTML = `${weather_data.main.humidity}%`;
-
-		wind_speed.innerHTML = `${Math.round((weather_data.wind.speed)*3.6)}Km/Hr`;
-
-	// <<============================ Image selector=====================================>> 
-
-		switch(weather_data.weather[0].main){
-			case 'Clouds':
-				weather_img.src = "/img/cloud.png";
-				break;
-			case 'Clear':
-				weather_img.src = "/img/clear.png";
-				break;
-			case 'Rain':
-				weather_img.src = "/img/rain.png";
-				break;
-			case 'Mist':
-				weather_img.src = "/img/mist.png";
-				break;
-			case 'Snow':
-				weather_img.src = "/img/snow.png";
-				break;
-		}
-
-		switch(weather_data.weather[0].main){
-			case 'Clouds':
-				body.style.backgroundImage = "url('/img/cloudbg.jpg')";
-				break;
-			case 'Clear':
-				body.style.backgroundImage = "url('/img/clearbg.jpg')";
-				break;
-			case 'Rain':
-				body.style.backgroundImage = "url('/img/rainbg.jpg')";
-				break;
-			case 'Mist':
-				body.style.backgroundImage = "url('/img/mistbg.jpg')";
-				break;
-			case 'Snow':
-				body.style.backgroundImage = "url('/img/snowbg.jpg')";
-				break;
-		}
-		
-	}
-	console.log(weather_data);
+// <<============================ Helpers =====================================>>
+function showNotFound() {
+    location_not_found.style.display = 'flex';
+    weather_body.style.display = 'none';
+    body.style.backgroundColor = 'hsl(240, 58%, 48%)';
+    body.style.backgroundImage = 'none';
 }
 
+// <<============================ Main Function =====================================>>
+async function checkWeather(city) {
+    city = city.trim();
+    if (!city) return;
+
+    const api_key = 'dbfedf966d7f8edcf98ed3b799512581';
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${api_key}`;
+
+    let weather_data;
+    try {
+        const response = await fetch(url);
+        weather_data = await response.json();
+    } catch (error) {
+        console.error('Network error:', error);
+        showNotFound();
+        return;
+    }
+
+    // <<============================ Error Handling =====================================>>
+    // OpenWeatherMap returns cod as a string ('404') on errors and a number (200) on success.
+    if (String(weather_data.cod) !== '200') {
+        showNotFound();
+        return;
+    }
+
+    // <<============================ Value Obtaining =====================================>>
+    location_not_found.style.display = 'none';
+    weather_body.style.display = 'flex';
+
+    temperature.innerHTML = `${Math.round(weather_data.main.temp - 273.15)}°C`;
+    description.innerHTML = weather_data.weather[0].description;
+    humidity.innerHTML = `${weather_data.main.humidity}%`;
+    wind_speed.innerHTML = `${Math.round(weather_data.wind.speed * 3.6)}Km/Hr`;
+
+    // <<============================ Image selector =====================================>>
+    const [icon, background] = WEATHER_IMAGES[weather_data.weather[0].main] || DEFAULT_IMAGES;
+    weather_img.src = icon;
+    body.style.backgroundImage = `url('${background}')`;
+
+    console.log(weather_data);
+}

@@ -9,50 +9,51 @@
 <body id="body">
   <div class="container">
     <div class="header">
-<!-- =======================SERACH BOX============================== -->
-
+      <!-- ======================= SEARCH BOX ============================== -->
       <div class="search-box">
-        <input type="text" placeholder="Enter your location" class="input-box"> 
-        <button class="fa-solid fa-magnifying-glass" id="searchBtn"></button>
+        <input type="text" placeholder="Enter your location" class="input-box">
+        <button class="fa-solid fa-magnifying-glass" id="searchBtn" aria-label="Search"></button>
       </div>
     </div>
-<!-- =======================ERROR IMAGE==============================-->
+
+    <!-- ======================= ERROR IMAGE ============================== -->
     <div class="location-not-found">
       <h1>Sorry, Location not found!!!</h1>
-      <img src="/img/404.png" alt="404 Error">
+      <img src="img/404.png" alt="404 Error">
     </div>
-<!-- =======================WEATHER BODY==============================-->
+
+    <!-- ======================= WEATHER BODY ============================== -->
     <div class="weather-body">
-      <img src="/img/clear.png" alt="Weather Image" class="weather-img">
+      <img src="img/clear.png" alt="Weather Image" class="weather-img">
 
       <div class="weather-box">
         <p class="temperature">0 <sup>&#176;C</sup></p>
-        <p  class="description">sunny</p>
+        <p class="description">sunny</p>
       </div>
 
       <div class="weather-details">
-    <!-- =========================HUMIDITY==========================-->
+        <!-- ========================= HUMIDITY ========================== -->
         <div class="humidity">
           <i class="fa-solid fa-droplet"></i>
           <div class="text">
             <span id="humidity">45%</span>
-              <p>Humidity</p>
-          </div>
-        </div>
-    <!-- =========================WIND SPEED==========================-->
-          <div class="wind">
-          <i class="fa-solid fa-wind"></i>
-          <div class="text">
-            <span id="wind-speed">12Km/Hr</span>
-              <p>Wind Speed</p>
+            <p>Humidity</p>
           </div>
         </div>
 
+        <!-- ========================= WIND SPEED ========================== -->
+        <div class="wind">
+          <i class="fa-solid fa-wind"></i>
+          <div class="text">
+            <span id="wind-speed">12Km/Hr</span>
+            <p>Wind Speed</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <script src="script.js"></script>
   <script src="https://kit.fontawesome.com/0e4b730334.js" crossorigin="anonymous"></script>
+  <script src="script.js"></script>
 </body>
 </html>
